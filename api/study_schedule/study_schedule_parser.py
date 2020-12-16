@@ -29,6 +29,32 @@ def get_current_day_study_schedule(study_schedule, current_study_week, current_d
             lessons.append(lesson)
     return lessons
 
+@app.route("/get-schedule-all-lessons", methods=['POST'])
+def get_all_lessons():
+    group_name = request.get_json()['group_name']
+    study_schedule = get_study_schedule(url, group_name)
+    day_number = request.get_json()['day_number']
+    current_study_week = get_current_study_week()
+
+    all_lessons = study_schedule['data']
+    lessons = []
+    unique = []
+
+    for lesson in all_lessons:
+        temp = { lesson['lesson_name'], lesson['lesson_type'] }
+        if temp not in unique:
+            unique.append(temp)
+            lessons.append(lesson)
+
+    return jsonify(
+        group_name=group_name,
+        day_number=day_number,
+        current_study_week=current_study_week,
+        study_schedule=lessons
+    )
+
+
+
 @app.route("/get-schedule-current-day", methods=['POST'])
 def analyse_sentiment():
     group_name = request.get_json()['group_name']
