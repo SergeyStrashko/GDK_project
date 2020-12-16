@@ -1,10 +1,20 @@
 const express = require('express')
 const fetch = require("node-fetch");
+const db = require('./queries');
 
 const app = express()
 const port = 3000
 
 app.use(express.json())
+
+app.post('/students', db.addStudent);
+app.post('/lessons-evaluation', db.addLesson);
+app.post('/lecturers-evaluation', db.addLecturer);
+app.post('/evaluations-info', db.addEvaluationInfo);
+app.get('/schedule', db.getSchedule);
+app.get('/lecturers-evaluation', db.getLecturerEvaluation);
+app.get('/lessons-evaluation',db.getLessonEvaluation);
+app.get('/credentials', db.getCredentials);
 
 app.post('/study-schedule-current-day', (req, res) => {
   (async () => {
